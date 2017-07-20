@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="single_margin">8dp</dimen>
+    <dimen name="double_margin">16dp</dimen>
+    <dimen name="ad_height">72dp</dimen>
+    <dimen name="ic_height">72dp</dimen>
+</resources>

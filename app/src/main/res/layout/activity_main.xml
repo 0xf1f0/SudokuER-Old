@@ -1,19 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.sudokuer.sudokuer.MainActivity">
+    android:background="@color/light_background"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
 
-    <TextView
+    <ImageView
+        android:id="@+id/sudoku_imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/if_gnome_sudoku"/>
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/local_hospital_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/sudoku_imageview"
+        android:layout_centerHorizontal="true"
+        android:background="@color/emergency_red"
+        android:src="@drawable/ic_local_hospital_white_48dp"/>
+
+    <Button
+        android:id="@+id/select_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ad_placeholder"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/double_margin"
+        android:drawableTop="@drawable/ic_photo_library_black_48dp"
+        android:text="@string/select_image"
+        android:textAllCaps="true"
+        android:layout_marginLeft="@dimen/double_margin"/>
+
+    <Button
+        android:id="@+id/add_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ad_placeholder"
+        android:layout_centerHorizontal="true"
+        android:drawableTop="@drawable/ic_add_a_photo_black_48dp"
+        android:text="@string/capture_image"
+        android:textAllCaps="true"/>
+
+    <Button
+        android:id="@+id/app_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ad_placeholder"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/double_margin"
+        android:drawableTop="@drawable/ic_info_black_48dp"
+        android:text="@string/about_app"
+        android:textAllCaps="true"
+        android:layout_marginRight="@dimen/double_margin"/>
+
+    <TextView
+        android:id="@+id/ad_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ad_height"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/double_margin"
+        android:gravity="center_horizontal"
+        android:text="@string/place_ads_here"
+        android:textAllCaps="true"
+        android:textColor="@color/colorAccent"/>
+</RelativeLayout>
