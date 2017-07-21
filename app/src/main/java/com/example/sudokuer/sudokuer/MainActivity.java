@@ -2,6 +2,8 @@ package com.example.sudokuer.sudokuer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -9,14 +11,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity
 {
-    //Test OpenCV Library import
     private final String TAG = getClass().getSimpleName();
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int SELECT_IMAGE_FROM_GALLERY = 2;
-    private String mCurrentPhotoPath;
+
+    //The path to an image file
+    String mCurrentImagePath;
+
+    //Bitmap to store image object
+    Bitmap mBitmap = null;
 
     //Buttons on home screen
     /* Select an image(sudoku) from photo gallery */
@@ -28,22 +38,41 @@ public class MainActivity extends AppCompatActivity
 
     private Uri imageUri;
 
+    private ImageView displayImage;
+
+
+    //Test OpenCV Library import
+
+    //    static {
+//        if(!OpenCVLoader.initDebug())
+//        {
+//            Log.i("OpenCV: ", "OpenCV Initialization failed!");
+//        }
+//        else
+//        {
+//            Log.i("OpenCV: ", "OpenCV Initialization successful!");
+//        }
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*Link the buttons with their respective resource ID*/
         galleryBtn = (Button) findViewById(R.id.select_image);
         captureBtn = (Button) findViewById(R.id.add_image);
         aboutBtn = (Button) findViewById(R.id.app_info);
+
+        /*Link the ImageView to it resource ID*/
+        displayImage = (ImageView) findViewById(R.id.display_image);
 
         captureBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                dispatchTakePictureIntent();
+                takePictureIntent();
             }
         });
 
@@ -81,12 +110,14 @@ public class MainActivity extends AppCompatActivity
         if ((requestCode == SELECT_IMAGE_FROM_GALLERY) && (resultCode == Activity.RESULT_OK))
         {
             imageUri = data.getData();
+            //Display the image on screen
+            displayImageOnScreen();
         }
     }
 
     /* Activate device camera and take a picture; possibly a sudoku game */
 
-    private void dispatchTakePictureIntent()
+    private void takePictureIntent()
     {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null)
@@ -103,4 +134,27 @@ public class MainActivity extends AppCompatActivity
         selectImageFromGallery.setType("image/*");
         startActivityForResult(selectImageFromGallery, SELECT_IMAGE_FROM_GALLERY);
     }
+
+    /**
+     * Display a bitmap image capture or loaded from gallery on screen
+     */
+    private void displayImageOnScreen()
+    {
+        InputStream inputStream;
+//        mCurrentImagePath = imageUri.getPath();
+        try
+        {
+            inputStream = getContentResolver().openInputStream(imageUri);
+            //
+            if (inputStream != null)
+            {
+                mBitmap = BitmapFactory.decodeStream(inputStream);
+                displayImage.setImageBitmap(mBitmap);
+            }
+        } catch (FileNotFoundException e)
+        {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
 }
