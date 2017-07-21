@@ -3,5 +3,5 @@
     <string name="place_ads_here">place ads here</string>
     <string name="about_app">about</string>
     <string name="capture_image">capture</string>
-    <string name="select_image">gallery</string>
+    <string name="select_image">images</string>
 </resources>
