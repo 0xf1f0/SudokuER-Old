@@ -4,4 +4,5 @@
     <string name="about_app">about</string>
     <string name="capture_image">capture</string>
     <string name="select_image">images</string>
+    <string name="done">done</string>
 </resources>

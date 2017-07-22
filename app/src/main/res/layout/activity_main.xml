@@ -6,27 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/light_background"
     android:orientation="vertical"
-    tools:ignore="ContentDescription">
-    <!--
-        For Later
-        <ImageView
-            android:id="@+id/sudoku_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/if_gnome_sudoku"/>
+    tools:context="com.example.sudokuer.sudokuer.MainActivity">
 
-        <ImageView
-            android:id="@+id/local_hospital_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/sudoku_imageview"
-            android:layout_centerHorizontal="true"
-            android:background="@color/emergency_red"
-            android:src="@drawable/ic_local_hospital_white_48dp"/>
-        -->
     <Button
         android:id="@+id/select_image"
         android:layout_width="wrap_content"
@@ -75,10 +56,4 @@
         android:textAllCaps="true"
         android:textColor="@color/colorAccent"/>
 
-    <ImageView
-        android:id="@+id/display_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitStart"/>
 </RelativeLayout>
