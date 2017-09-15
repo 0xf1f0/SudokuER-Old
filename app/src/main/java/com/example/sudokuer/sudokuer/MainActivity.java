@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity
     /* Display useful information about the application*/
     private Button aboutBtn;
 
+    /* Image Uri where the image will be store */
+    private String mImagePath;
+
+
     private Uri imageUri;
 
     @Override
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                takePictureIntent();
+                takePicture();
             }
         });
 
@@ -60,7 +64,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                selectImageIntent();
+                selectImage();
             }
         });
 
@@ -95,9 +99,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /* Activate device camera and take a picture; possibly a sudoku game */
+    /* Activate device camera and take a picture of a valid/solvable sudoku game */
 
-    private void takePictureIntent()
+    private void takePicture()
     {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null)
@@ -107,19 +111,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     /*Select a image from photo gallery*/
-    private void selectImageIntent()
+    private void selectImage()
     {
-        Intent selectImageFromGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media
+        Intent selectImageFromGalleryIntent= new Intent(Intent.ACTION_PICK, MediaStore.Images.Media
                 .EXTERNAL_CONTENT_URI);
-        selectImageFromGallery.setType("image/*");
-        startActivityForResult(selectImageFromGallery, SELECT_IMAGE_FROM_GALLERY);
+        selectImageFromGalleryIntent.setType("image/jpeg");
+        startActivityForResult(selectImageFromGalleryIntent, SELECT_IMAGE_FROM_GALLERY);
     }
 
 
     /**
      * Display a bitmap image capture or loaded from gallery on screen
      */
-    private void displayImageIntent()
+    private void displayImage()
     {
         InputStream inputStream;
 //        mCurrentImagePath = imageUri.getPath();

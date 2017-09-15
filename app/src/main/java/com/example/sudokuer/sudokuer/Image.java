@@ -13,12 +13,6 @@ import android.widget.ImageView;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -30,10 +24,12 @@ public class Image extends AppCompatActivity
 
     //logcat tag
     private final String TAG = getClass().getSimpleName();
+    private final int SCALESIZE = 2;
 
     private Button mDoneBtn;
-    private Bitmap mBitmap;
 
+
+    //ToDo: Use the bitmap filePath instead of the inputStream
 
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this)
@@ -49,7 +45,7 @@ public class Image extends AppCompatActivity
                     Log.i(TAG, "OpenCV loaded successfully");
                     try
                     {
-                        DifferenceOfGaussian();
+//                        DifferenceOfGaussian();
                     } catch (Exception e)
                     {
                         e.printStackTrace();
@@ -114,16 +110,16 @@ public class Image extends AppCompatActivity
             }
         });
 
-
     }
 
     /**
-     * Display a mBitmap image capture or loaded from gallery on screen
+     * Display a mOriginalBitmap image capture or loaded from gallery on screen
      */
     private void handleImageIntent(Uri imageUri)
     {
         Log.i(TAG, "Calling -> handleImageIntent()");
         InputStream inputStream;
+
 
         if (imageUri != null)
         {
@@ -132,11 +128,8 @@ public class Image extends AppCompatActivity
                 inputStream = getContentResolver().openInputStream(imageUri);
                 if (inputStream != null)
                 {
-                    mBitmap = BitmapFactory.decodeStream(inputStream);
-                    if (mBitmap != null)
-                    {
-                        loadImageToImageView();
-                    }
+                    //Reduce the bitmap by SCALESIZE
+                    displayScaledBitmap(inputStream, SCALESIZE);
                 }
             } catch (FileNotFoundException e)
             {
@@ -145,43 +138,18 @@ public class Image extends AppCompatActivity
         }
     }
 
-    public void DifferenceOfGaussian()
+    /* Create a scaled bitmap from the input stream*/
+    private void displayScaledBitmap(InputStream inputStream, int sampleSize)
     {
-        Log.i(TAG, "Calling -> DifferenceOfGaussian()");
-        Mat grayMat = new Mat();
-        Mat blur1 = new Mat();
-        Mat blur2 = new Mat();
-        Mat imageMat = new Mat();
-        //Covert mBitmap to Mat
 
+        Log.i(TAG, "Calling -> displayScaledBitmap()");
 
-        //Converting Bitmap back to Mat
-        Utils.bitmapToMat(mBitmap, imageMat);
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        bitmapOptions.inSampleSize = sampleSize;
 
-        //Converting the image to grayscale
-        Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_BGR2GRAY);
-
-        //Blurring the images using two different blurring radius
-        Imgproc.GaussianBlur(grayMat, blur1, new Size(15, 15), 5);
-        Imgproc.GaussianBlur(grayMat, blur2, new Size(21, 21), 5);
-
-        //Subtracting the two blurred images
-        Mat DoG = new Mat();
-        Core.absdiff(blur1, blur2, DoG);
-
-        //Inverse Binary Thresholding
-        Core.multiply(DoG, new Scalar(100), DoG);
-        Imgproc.threshold(DoG, DoG, 50, 255, Imgproc.THRESH_BINARY_INV);
-
-        //Convert mat to bitmap
-        Utils.matToBitmap(DoG, mBitmap);
-    }
-
-    private void loadImageToImageView()
-    {
-        Log.i(TAG, "Calling -> loadImageToImageView()");
-
+        Bitmap scaledBitmap = BitmapFactory.decodeStream(inputStream, null, bitmapOptions);
         mImageView = (ImageView) findViewById(R.id.display_image);
-        mImageView.setImageBitmap(mBitmap);
+        mImageView.setImageBitmap(scaledBitmap);
     }
+
 }
